@@ -3,55 +3,176 @@ import {computed, ref} from 'vue';
 import ProductItem from "@/components/ProductsList/ProductItem.vue";
 import axios from "axios";
 import {API_BASE_URL} from "@/config.js";
+import {numberFormat} from "@/helpers/numberFormat.js";
 const products = ref([]);
 
-const page = 1;
-const perPage = 4;
+const page = ref(1);
+const perPage = ref(4);
+const productsLoading = ref(true)
 
+const nextPage = () => {
+  if (page.value === products.value.pagination.pages) return
+  page.value++
+  getProducts()
+}
 
+const paginate = (pageNum) => {
+  page.value = pageNum;
+  getProducts()
+}
+const prevPage = () => {
+  if (page.value === 1) return
+  page.value--
+  getProducts()
+}
 
 async function getProducts() {
-  return await (new Promise(resolve => setTimeout(resolve, 200)))
+  productsLoading.value = false
+  return await (new Promise(resolve => setTimeout(resolve, 1000)))
       .then(() => {
         return axios.get(`${API_BASE_URL}/api/products`, {
           params: {
-            page: page,
-            limit: perPage,
+            page: page.value,
+            limit: perPage.value,
 
           }
         })
             .then(response => {
-              console.log(response.data)
               products.value = response.data
             })
       })
+      .then(() => productsLoading.value = true)
 }
 getProducts()
 
 </script>
 
 <template>
-  <div class="container container3 mt-3 mb-3 flex-fill text-center p-3">
+  <div v-if="productsLoading" class="container container3 mt-3 mb-3 flex-fill text-center p-3">
     <h2 class="text-center mb-4">Четвертая задача</h2>
       <ul class="list-unstyled d-flex flex-wrap justify-content-between">
-      <product-item v-for="product of products.items" :product="product"/>
+      <product-item v-for="product of products?.items" :product="product" :key="product.id"/>
       </ul>
-    <ul class="list-unstyled pagination">
-      <li style="display: none">
-        <button class="btn btn-light">&#8249;</button>
+    <ul class="pagination">
+      <li>
+        <button @click.prevent="prevPage" class="btn btn-light">&#8249;</button>
       </li>
-        <li  v-for="page in products.pagination.pages">
-          <button @click.prevent="getProducts" >{{page}}</button>
+        <li v-for="page in products.pagination.pages" :key="page">
+          <button @click.prevent="paginate(page)" :class="{active: page === products.pagination.page}" class="btn btn-light" >{{page}}</button>
         </li>
-
-        <li style="display: none">
-          <button @click.prevent="page++" class="btn btn-light">&#8250;</button>
+        <li>
+          <button @click.prevent="nextPage" class="btn btn-light">&#8250;</button>
         </li>
     </ul>
+  </div>
+  <div v-else class="container container3 mt-3 mb-3 flex-fill text-center p-3">
+    <h2 class="text-center mb-4">Четвертая задача</h2>
+      <ul class="list-unstyled d-flex flex-wrap justify-content-between">
+        <li class="text-left">
+          <div class="card">
+            <img class="blink" src="/load-photo.png" alt="загрузка">
+            <div class="card-body">
+              <div class="loader__wrap-list cost w-100">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+            <div class="card-body list-group pl-3 list-group-flush d-flex">
+              <div class="loader__wrap-list cost w-75 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+            <div class="card-body pl-3 w-50 d-flex">
+              <div class="loader__wrap-list cost w-50 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+          </div>
+        </li>
+        <li class="text-left">
+          <div class="card">
+            <img class="blink" src="/load-photo.png" alt="загрузка">
+            <div class="card-body">
+              <div class="loader__wrap-list cost w-100">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+            <div class="card-body list-group pl-3 list-group-flush d-flex">
+              <div class="loader__wrap-list cost w-75 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+            <div class="card-body pl-3 w-50 d-flex">
+              <div class="loader__wrap-list cost w-50 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+          </div>
+        </li>
+        <li class="text-left">
+          <div class="card">
+            <img class="blink" src="/load-photo.png" alt="загрузка">
+            <div class="card-body">
+              <div class="loader__wrap-list cost w-100">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+            <div class="card-body list-group pl-3 list-group-flush d-flex">
+              <div class="loader__wrap-list cost w-75 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+            <div class="card-body pl-3 w-50 d-flex">
+              <div class="loader__wrap-list cost w-50 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+          </div>
+        </li>
+        <li class="text-left">
+          <div class="card">
+            <img class="blink" src="/load-photo.png" alt="загрузка">
+            <div class="card-body">
+              <div class="loader__wrap-list cost w-100">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+            <div class="card-body list-group pl-3 list-group-flush d-flex">
+              <div class="loader__wrap-list cost w-75 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+            <div class="card-body pl-3 w-50 d-flex">
+              <div class="loader__wrap-list cost w-50 title">
+                <div class="load-anim p-3"></div>
+              </div>
+            </div>
+
+          </div>
+        </li>
+      </ul>
+    <div class="loader__wrap-list cost w-25 mx-auto">
+      <div class="load-anim"></div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+
+.list-unstyled > li {
+  width: 23%;
+  margin-bottom: 20px;
+}
+img {
+  height: 250px;
+  object-fit: cover;
+}
 .pagination {
   display: flex;
   justify-content: center;
