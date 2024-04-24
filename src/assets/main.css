@@ -10,6 +10,10 @@ body main {
     flex: 1 0 auto;
 }
 
+input {
+    outline: none;
+}
+
 img {
     max-width: 100%;
 }

@@ -8,6 +8,8 @@ import {useCart} from "@/stores/index.js";
 const loadCart = useCart()
 const userAccessKey = localStorage.getItem('userKey');
 
+console.log(userAccessKey)
+
 userAccessKey ? loadCart.updateKey(userAccessKey) : loadCart.getKey()
 
 </script>

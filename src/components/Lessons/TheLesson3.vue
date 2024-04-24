@@ -15,7 +15,7 @@ const fetchData = async () => {
 }
 
 (async function getIp() {
-  return await axios.get(`https://ipapi.co/json/`)
+  return await axios.get(`http://ipapi.co/json/`)
       .then(response => activeIp.value = response.data.ip)
 })();
 
@@ -29,6 +29,9 @@ const fetchData = async () => {
     </h4>
     <h6>
       Введите нужный IP для поиска и получите информацию о нём
+    </h6>
+    <h6>
+      На данный момент работает только в локале, поскольку идет запрос с https на http, ошибка безопасности
     </h6>
     <p>для тестов примеры:</p>
     <p>83.220.236.0</p>

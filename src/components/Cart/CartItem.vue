@@ -21,7 +21,7 @@ const deleteItem = (id) => {
     </div>
     <div class="d-flex flex-column align-items-center mr-4">
       <h5>{{numberFormat(props.item.product.price)}}</h5>
-      <input class="input-group-text pr-0" type="number" v-model="countItem">
+      <p class="text-left text-black-50">Кол-во: {{countItem}}</p>
     </div>
     <button @click.prevent="deleteItem(props.item.product.id)" class="btn btn-outline-danger font-weight-bold mr-3">
       &#x2613;

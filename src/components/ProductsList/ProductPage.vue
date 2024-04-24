@@ -4,29 +4,31 @@ import {ref} from "vue";
 import {numberFormat} from "@/helpers/numberFormat.js";
 import {API_BASE_URL} from "@/config.js";
 import {useCart} from "@/stores/index.js";
+import axios from "axios";
 
-const useCartToAdd = useCart()
-const product = ref({})
+const useCartToAdd = useCart();
+const product = ref({});
+const countProduct = ref(1)
 const route = useRoute();
 
 const productLoading = ref(false);
 const loadProductTimer = ref({});
 
 function addToCart() {
-  useCartToAdd.addToCart({productId: product.value.id, amount: 1})
+  useCartToAdd.addToCart({productId: product.value.id, amount: countProduct.value})
 }
 
-const loadProduct = () => {
+(async function loadProduct() {
   productLoading.value = true;
   clearTimeout(loadProductTimer.value)
-  loadProductTimer.value = setTimeout(async () => {
-    return await fetch(`${API_BASE_URL}/api/products/${route.params.id}`)
-        .then(response => response.json())
-        .then(data => product.value = data)
-        .then(() => productLoading.value = false)
-  },2000)
-}
-loadProduct()
+  return await (new Promise(resolve => setTimeout(resolve, 500)))
+      .then(() => {
+        return axios.get(`${API_BASE_URL}/api/products/${route.params.id}`)
+            .then(response => product.value = response.data)
+            .then(() => productLoading.value = false)
+      })
+
+})();
 
 
 </script>
@@ -50,7 +52,12 @@ loadProduct()
           <span class="d-inline-block mr-2 color"> {{product.category?.title}}</span>
         </h5>
         <h4>Цена: {{numberFormat(product?.price)}}</h4>
-        <button @click.prevent="addToCart" class="btn btn-dark mt-2">В корзину</button>
+        <div class="mt-2 d-flex">
+          <button @click.prevent="countProduct === 1 ? countProduct = 1 :countProduct-- " class="btn btn-danger">-</button>
+          <input type="text" readonly class="input-group-text mx-1" v-model="countProduct">
+          <button @click.prevent="countProduct++" class="btn btn-success">+</button>
+          <button @click.prevent="addToCart" class="btn btn-dark ml-2">В корзину</button>
+        </div>
       </div>
     </div>
   </div>
@@ -69,11 +76,11 @@ loadProduct()
           <div class="load-anim"></div>
           <div class="load-anim"></div>
         </div>
-        <div class="loader__wrap-list mb-2">
-          <div class="load-anim p-3"></div>
-        </div>
-        <div class="loader__wrap-list cost ">
+        <div class="loader__wrap-list cost mb-2">
           <div class="load-anim"></div>
+        </div>
+        <div class="loader__wrap-list cost w-50">
+          <div class="load-anim p-3"></div>
         </div>
       </div>
     </div>
@@ -81,6 +88,9 @@ loadProduct()
 </template>
 
 <style scoped>
+input {
+  width: 60px;
+}
 .container3 .wrap {
   gap: 20px;
 }

@@ -47,7 +47,9 @@ export const useCart = defineStore('loadCart', () => {
         })
             .then(response => {
                 if (!userAccessKey.value) {
-                    localStorage.setItem('userKey', response.data.user.accessKey)
+                    localStorage.setItem('userKey', response.data.user.accessKey);
+                    userAccessKey.value = response.data.user.accessKey;
+                    updateCart(response.data.items)
                 } else {
                     updateCart(response.data.items)
                 }
