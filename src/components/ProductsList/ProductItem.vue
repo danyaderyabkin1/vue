@@ -6,9 +6,18 @@ import {ref} from "vue";
 const cart = useCart();
 const props = defineProps(['product']);
 const item = ref(props.product);
+const loading = ref(false)
 
-const addItem = (id) => {
-  cart.addToCart({productId: id, amount: 1})
+const addItem = async (id) => {
+  loading.value = true
+  return await (new Promise( resolve => setTimeout(resolve, 700)))
+      .then(() => {
+        cart.addToCart({productId: id, amount: 1})
+      })
+      .then(() => {
+        loading.value = false
+      })
+
 }
 
 </script>
@@ -30,7 +39,9 @@ const addItem = (id) => {
         <h5 class="list-group-item mb-0">Цена: {{ numberFormat(item?.price)  }}</h5>
       </div>
       <div class="card-body d-flex">
-        <button @click.prevent="addItem(item.id)" class="btn btn-dark"> В корзину</button>
+        <button @click.prevent="addItem(item.id)" :class="{loading: loading}" class="btn btn-dark position-relative"> В корзину
+          <span v-show="loading" class="loader"></span>
+        </button>
       </div>
     </div>
   </li>
@@ -51,4 +62,5 @@ img {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
 </style>

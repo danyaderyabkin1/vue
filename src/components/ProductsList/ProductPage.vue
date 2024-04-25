@@ -10,12 +10,21 @@ const useCartToAdd = useCart();
 const product = ref({});
 const countProduct = ref(1)
 const route = useRoute();
+const loading = ref(false)
 
 const productLoading = ref(false);
 const loadProductTimer = ref({});
 
-function addToCart() {
-  useCartToAdd.addToCart({productId: product.value.id, amount: countProduct.value})
+async function addToCart() {
+  loading.value = true
+  return await (new Promise( resolve => setTimeout(resolve, 700)))
+      .then(() => {
+        useCartToAdd.addToCart({productId: product.value.id, amount: countProduct.value})
+      })
+      .then(() => {
+        loading.value = false
+      })
+
 }
 
 (async function loadProduct() {
@@ -56,7 +65,9 @@ function addToCart() {
           <button @click.prevent="countProduct === 1 ? countProduct = 1 :countProduct-- " class="btn btn-danger">-</button>
           <input type="text" readonly class="input-group-text mx-1" v-model="countProduct">
           <button @click.prevent="countProduct++" class="btn btn-success">+</button>
-          <button @click.prevent="addToCart" class="btn btn-dark ml-2">В корзину</button>
+          <button @click.prevent="addToCart" :class="{loading: loading}" class="btn btn-dark ml-2 position-relative">В корзину
+            <span v-show="loading" class="loader"></span>
+          </button>
         </div>
       </div>
     </div>

@@ -10,11 +10,18 @@ const promo = ref(true);
 const promoReady = ref(false);
 const promoDone = ref(false);
 const promoText = ref('');
+const deleteAllCart = ref(false);
 
 const totalPromo = computed(() => {
   const percent_10 = (cart.cartTotal / 100) * 10
   return cart.cartTotal - percent_10;
-})
+});
+
+const resetCart = () => {
+  deleteAllCart.value = true;
+  return (new Promise(resolve => setTimeout(resolve, 500)))
+      .then(() => cart.deleteAllItems())
+}
 
 const deletePromo = () => {
   promo.value = true
@@ -38,9 +45,12 @@ const activatePromo = (e) => {
   <div class="container container3 d-flex flex-column mb-3 mt-3 text-center p-3 flex-fill">
     <h2 class="text-center mb-4">Корзина</h2>
     <div class="d-flex flex-fill wrap">
-      <div class="cart-wrap">
-        <ul class="list-unstyled" :class="{notEvent : promoDone}">
-          <cart-item v-for="item in cart.cartItems" :key="item.id" :item="item">
+      <div class="cart-wrap d-flex flex-column">
+        <h4 v-if="!cart.cartItems.length" class="mt-3">Ваша корзина пуста!</h4>
+        <button v-else @click.prevent="resetCart" :class="{hide: deleteAllCart}" class="btn btn-dark mt-3 ml-3 align-self-start">очистить корзину</button>
+
+        <ul class="list-unstyled" :class="{notEvent : promoDone, hide: deleteAllCart}">
+          <cart-item v-for="item in cart?.cartItems" :key="item.product.id" :item="item">
           </cart-item>
         </ul>
 

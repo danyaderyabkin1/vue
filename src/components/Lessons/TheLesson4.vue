@@ -6,7 +6,7 @@ import {API_BASE_URL} from "@/config.js";
 import {numberFormat} from "@/helpers/numberFormat.js";
 const products = ref([]);
 
-const page = ref(1);
+const page = ref(2);
 const perPage = ref(4);
 const productsLoading = ref(true)
 
@@ -28,7 +28,7 @@ const prevPage = () => {
 
 async function getProducts() {
   productsLoading.value = false
-  return await (new Promise(resolve => setTimeout(resolve, 1000)))
+  return await (new Promise(resolve => setTimeout(resolve, 500)))
       .then(() => {
         return axios.get(`${API_BASE_URL}/api/products`, {
           params: {

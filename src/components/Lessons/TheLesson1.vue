@@ -1,7 +1,5 @@
 <script setup>
 import {computed, ref} from "vue";
-import {useCount} from "@/stores/index.js";
-const store = useCount()
 const array = ref([
   {
     name: 'Задача по умолчанию',
@@ -85,12 +83,6 @@ const addTask = () => {
   textTask.value = ''
 }
 
-const add = () => {
-  store.increment()
-}
-const unAdd = () => {
-  store.unIncrement()
-}
 const textTask = ref('')
 
 </script>
@@ -174,8 +166,6 @@ const textTask = ref('')
             </label>
           </li>
         </ul>
-        <button @click.prevent="unAdd" class="btn btn-dark mr-3">минусуем корзину</button>
-        <button @click.prevent="add" class="btn btn-dark">плюсуем корзину</button>
       </div>
 
     </div>

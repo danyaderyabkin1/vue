@@ -4,18 +4,6 @@ import {computed, ref} from "vue";
 import {API_BASE_URL} from "@/config.js";
 import axios from "axios";
 
-export const useCount = defineStore('count', () => {
-    const count = ref(0);
-    const increment = () => {
-        count.value++
-    }
-    const unIncrement = () => {
-        if (count.value === 0) return
-        count.value--
-    }
-    return {count, increment, unIncrement}
-});
-
 export const useCart = defineStore('loadCart', () => {
     const userAccessKey = ref(null);
     const cartItems = ref([]);
@@ -24,7 +12,6 @@ export const useCart = defineStore('loadCart', () => {
     const cartTotal = computed(() => {
         return cartItems.value.reduce((acc, item) => (item.price * item.quantity) + acc, 0)
     })
-
 
 
     const updateKey = (key) => {
@@ -57,7 +44,7 @@ export const useCart = defineStore('loadCart', () => {
             })
     }
 
-    async function deleteItem(productId){
+    async function deleteItem(productId) {
         return await axios.delete(`${API_BASE_URL}/api/baskets/products`, {
             params: {
                 userAccessKey: userAccessKey.value
@@ -71,13 +58,30 @@ export const useCart = defineStore('loadCart', () => {
             })
     }
 
-    async function addToCart({productId, amount}){
+    async function deleteAllItems() {
+        return cartItems.value.map(product => {
+            axios.delete(`${API_BASE_URL}/api/baskets/products`, {
+                params: {
+                    userAccessKey: userAccessKey.value
+                },
+                data: {
+                    productId: product.product.id
+                }
+            })
+                .then(response => {
+                    console.log(response.data)
+                    cartItems.value = [];
+                })
+        })
+    }
+
+    async function addToCart({productId, amount}) {
         return await axios.post(`${API_BASE_URL}/api/baskets/products`, {
             productId: productId,
             quantity: amount
         }, {
-            params : {
-                userAccessKey : userAccessKey.value
+            params: {
+                userAccessKey: userAccessKey.value
             }
         })
             .then(response => {
@@ -86,6 +90,6 @@ export const useCart = defineStore('loadCart', () => {
 
     }
 
-    return {userAccessKey, cartItems, cartTotal, getKey, updateKey, addToCart, deleteItem}
+    return {userAccessKey, cartItems, cartTotal, getKey, updateKey, addToCart, deleteItem, deleteAllItems}
 })
 

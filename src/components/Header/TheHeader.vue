@@ -33,7 +33,7 @@
           </li>
         </ul>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 mr-lg-3">
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 mr-lg-3 d-none">
           <input type="search" class="form-control form-control-dark" placeholder="Поиск..." aria-label="Поиск">
         </form>
 
