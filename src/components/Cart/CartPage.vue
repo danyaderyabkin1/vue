@@ -3,8 +3,10 @@ import CartItem from "@/components/Cart/CartItem.vue";
 import {useCart} from "@/stores/index.js";
 import {numberFormat} from "@/helpers/numberFormat.js";
 import {computed, ref} from "vue";
+import {useLoader} from "@/stores/loaderStore.js";
 
 const cart = useCart();
+const isLoader = useLoader()
 
 const promo = ref(true);
 const promoReady = ref(false);
@@ -19,7 +21,7 @@ const totalPromo = computed(() => {
 
 const resetCart = () => {
   deleteAllCart.value = true;
-  return (new Promise(resolve => setTimeout(resolve, 500)))
+  return (new Promise(resolve => setTimeout(resolve, 550)))
       .then(() => cart.deleteAllItems())
 }
 
@@ -30,13 +32,18 @@ const deletePromo = () => {
 }
 
 const activatePromo = (e) => {
-  if (promoText.value === 'SALE10') {
-    promoReady.value = true
-    promoDone.value = true
-    promoText.value = ''
-  } else {
-    e.target.querySelector('input').classList.add('error')
-  }
+  isLoader.loading()
+  setTimeout(() => {
+    if (promoText.value === 'SALE10') {
+      promoReady.value = true
+      promoDone.value = true
+      promoText.value = ''
+    } else {
+      e.target.querySelector('input').classList.add('error')
+    }
+  },500)
+
+
 }
 
 </script>
@@ -68,7 +75,7 @@ const activatePromo = (e) => {
             <form v-if="!promoDone" @submit.prevent="activatePromo" class="d-flex flex-wrap">
               <div class="d-flex">
                 <input v-model="promoText" class="input-group-text w-100" type="text">
-                <button class="btn btn-success ml-2">Применить</button>
+                <button :class="{loading: isLoader.isLoading}" class="btn btn-success ml-2">Применить</button>
               </div>
               <p class="text-black-50 text-left mb-0">Подсказка: SALE10</p>
             </form>

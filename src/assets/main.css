@@ -94,22 +94,30 @@ button:focus {
     background-color: #8b8b8b !important;
     border-color: #8b8b8b !important;
     pointer-events: none !important;
+    position: relative;
 }
 
-.loader {
+.loading::after {
+    content: "";
     width: 22px;
     height: 22px;
     border-radius: 50%;
     position: absolute;
     animation: rotate 1s linear infinite;
-    top: 7px;
-    left: 37px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
-.loader::before {
+.loading::before {
     content: "";
+    width: 25px;
+    height: 25px;
     box-sizing: border-box;
     position: absolute;
     inset: 0px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     border: 3px solid #FFF;
     animation: prixClipFix 1s linear infinite ;

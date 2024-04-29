@@ -4,11 +4,8 @@ import TheFooter from "@/components/Footer/TheFooter.vue";
 import TheBreadcrumbs from "@/components/Header/TheBreadcrumbs.vue";
 import {useCart} from "@/stores/index.js";
 
-
 const loadCart = useCart()
 const userAccessKey = localStorage.getItem('userKey');
-
-console.log(userAccessKey)
 
 userAccessKey ? loadCart.updateKey(userAccessKey) : loadCart.getKey()
 

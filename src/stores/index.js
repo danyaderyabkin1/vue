@@ -69,7 +69,6 @@ export const useCart = defineStore('loadCart', () => {
                 }
             })
                 .then(response => {
-                    console.log(response.data)
                     cartItems.value = [];
                 })
         })

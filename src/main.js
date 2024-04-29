@@ -9,7 +9,6 @@ import {createApp} from 'vue'
 import { createPinia } from 'pinia'
 import {router} from "@/router/index.js";
 
-
 const store = createPinia();
 app.use(router)
 app.use(store)

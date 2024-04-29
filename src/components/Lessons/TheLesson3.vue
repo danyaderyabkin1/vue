@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 
 const url = 'http://ip-api.com/json/';
@@ -14,10 +14,14 @@ const fetchData = async () => {
       .then(response => currentIp.value = response.data)
 }
 
-(async function getIp() {
-  return await axios.get(`http://ipapi.co/json/`)
-      .then(response => activeIp.value = response.data.ip)
-})();
+onMounted(() => {
+  (async function getIp() {
+    return await axios.get(`https://ipapi.co/json/`)
+        .then(response => activeIp.value = response.data.ip)
+  })();
+})
+
+
 
 </script>
 

@@ -2,7 +2,6 @@
 import {numberFormat} from "@/helpers/numberFormat.js";
 import {useCart} from "@/stores/index.js";
 import {ref} from "vue";
-
 const cart = useCart();
 const props = defineProps(['product']);
 const item = ref(props.product);

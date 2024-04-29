@@ -38,19 +38,19 @@ const arrayAdd = ref([
 ]);
 const arrayRadio = ref([
   {
-    name: 'Задача по умолчанию',
+    name: 'Задача',
     done: false
   },
   {
-    name: 'Вторая по умолчанию',
+    name: 'Вторая',
     done: false
   },
   {
-    name: 'Третья по умолчанию',
+    name: 'Третья',
     done: false
   },
   {
-    name: 'Четвертая по умолчанию',
+    name: 'Четвертая',
     done: false
   }
 ]);
@@ -95,14 +95,14 @@ const textTask = ref('')
         <div class="d-flex">
           <div class="flex-fill">
             <h3 >1-1</h3>
-            <label class="form-check" :for="i" v-for="(item, i) in unCompleted" :key="item">
-              <input class="form-check-input" :id="i" type="checkbox" v-model="item.done">
+            <label class="form-check" :for="item.name" v-for="(item, i) in unCompleted" :key="item">
+              <input class="form-check-input" :id="item.name" type="checkbox" v-model="item.done">
               {{ item.name }}
             </label>
           </div>
           <div class="flex-fill">
             <h3>Выполненные</h3>
-            <div style="margin-bottom: 10px;" class="output" v-for="(item, i) in completed" :key="item">
+            <div style="margin-bottom: 10px;" class="output" v-for="(item, i) in completed" :key="item.name">
               {{ item.name }}
             </div>
           </div>
@@ -110,7 +110,7 @@ const textTask = ref('')
         <h3>1-2</h3>
         <select class="form-select form-select-sm" v-model="selected">
           <option disabled value="">выбрать</option>
-          <option v-for="(item, i) in array" :key="i">{{ item.name }}</option>
+          <option v-for="(item, i) in array" :key="i * 100">{{ item.name }}</option>
         </select>
         <h3>{{ selected }}</h3>
         <div>
@@ -121,10 +121,10 @@ const textTask = ref('')
         <h3>Вывод: {{ text }}</h3>
 
         <h3>1-4 </h3>
-        <div v-for="(item, i) in arrayRadio" :key="item">
-          <label :for="i">
+        <div v-for="(item, i) in arrayRadio" :key="i">
+          <label :for="item.name">
             {{ item.name }}
-            <input type="radio" :id="i" :value="item" v-model="picked"/>
+            <input type="radio" :id="item.name" :value="item" v-model="picked"/>
           </label>
         </div>
         <div>Выбрано: {{ picked.name }}</div>
