@@ -10,6 +10,16 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  server: {
+    cors: false,
+    proxy: {
+      '/rss': {
+        target: 'https://lenta.ru',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 });
 
