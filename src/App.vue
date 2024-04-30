@@ -9,8 +9,6 @@ const userAccessKey = localStorage.getItem('userKey');
 
 userAccessKey ? loadCart.updateKey(userAccessKey) : loadCart.getKey()
 
-
-
 </script>
 
 <template>

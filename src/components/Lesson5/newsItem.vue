@@ -7,14 +7,15 @@ defineProps({
 <template>
   <li class="text-left">
     <div class="card">
-      <img width="200" src="/load-photo.png" alt="">
+      <img width="200" :src="item.image" alt="">
       <div class="card-body">
         <h5 class="card-title mb-0">
           {{item.title}}
         </h5>
       </div>
       <div class="list-group list-group-flush">
-        <p v-html="item.description" class="list-group-item mb-0"></p>
+        <p v-if="item.description.length" v-html="item.description" class="list-group-item mb-0"></p>
+        <p v-else class="list-group-item mb-0">Описание отсутствует</p>
       </div>
       <div class="card-body d-flex">
         <a :href="item.link" target="_blank" class="btn btn-success position-relative">Смотреть
