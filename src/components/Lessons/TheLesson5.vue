@@ -2,7 +2,10 @@
 import {useNewsList} from "@/stores/news.js";
 import NewsItem from "@/components/Lesson5/newsItem.vue";
 import {onMounted, onUnmounted, ref} from "vue";
+import {useLoader} from "@/stores/loaderStore.js";
 
+
+const isLoading = useLoader()
 const newsList = useNewsList();
 const items = ref(5);
 const currentUrl = ref('/rss')
@@ -16,8 +19,10 @@ onUnmounted(() => {
 })
 
 const pageAdding = (num, url) => {
+  isLoading.loading()
   items.value = num;
-  newsList.getNews(url, num);
+  new Promise(resolve => setTimeout(resolve, 500))
+      .then(() => newsList.getNews(url, num))
 }
 </script>
 
@@ -32,7 +37,7 @@ const pageAdding = (num, url) => {
     <ul v-else class="list-unstyled d-flex flex-wrap justify-content-between">
       <news-item v-for="item in newsList.newsItems" :item="item" :key="item.id"></news-item>
     </ul>
-    <button @click.prevent="pageAdding(items + 4, currentUrl)" class="btn btn-dark">загрузить еще</button>
+    <button @click.prevent="pageAdding(items + 4, currentUrl)" :class="{loading: isLoading.isLoading}" class="btn btn-dark">загрузить еще</button>
   </div>
 </template>
 

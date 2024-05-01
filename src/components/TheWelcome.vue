@@ -29,6 +29,12 @@
       url: '/lesson4',
       description: 'Работа с Api и Store'
     },
+    {
+      id: 5,
+      name: 'Пятая задача',
+      url: '/lesson5',
+      description: 'Работа с Rss'
+    },
 
   ])
 </script>
