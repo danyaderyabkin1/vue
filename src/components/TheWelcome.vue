@@ -26,7 +26,7 @@
     {
       id: 4,
       name: 'Четвертая задача',
-      url: '/lesson4',
+      url: '/lesson4?page=1',
       description: 'Работа с Api и Store'
     },
     {

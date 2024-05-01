@@ -12,7 +12,7 @@ const perPage = ref(4);
 const productsLoading = ref(true)
 
 const nextPage = () => {
-  if (page.value === products.value.pagination.pages) return
+  if (+router.query.page === products.value.pagination.pages) return
   page.value++
   getProducts()
 }
@@ -22,7 +22,7 @@ const paginate = (pageNum) => {
   getProducts()
 }
 const prevPage = () => {
-  if (page.value === 1) return
+  if (+router.query.page === 1) return
   page.value--
   getProducts()
 }
@@ -33,7 +33,7 @@ async function getProducts() {
       .then(() => {
         return axios.get(`${API_BASE_URL}/api/products`, {
           params: {
-            page: page.value,
+            page: router.query.page ? router.query.page : page.value,
             limit: perPage.value,
 
           }
@@ -55,14 +55,20 @@ getProducts()
       <product-item v-for="product of products?.items" :product="product" :key="product.id"/>
       </ul>
     <ul class="pagination">
-      <li>
-        <button @click.prevent="prevPage" class="btn btn-light">&#8249;</button>
+      <li class="d-none">
+        <router-link @click="prevPage" :to="{path: '/lesson4', query: {page: +router.query.page - 1}}">
+          <button class="btn btn-light">&#8249;</button>
+        </router-link>
       </li>
         <li v-for="page in products.pagination.pages" :key="page">
-            <button @click.prevent="paginate(page)" :class="{active: page === products.pagination.page}" class="btn btn-light" >{{page}}</button>
+          <router-link :to="{path: '/lesson4', query: {page: page}}">
+            <button @click="paginate(page)" :class="{active: page === products.pagination.page}" class="btn btn-light" >{{page}}</button>
+          </router-link>
         </li>
-        <li>
-            <button @click.prevent="nextPage" class="btn btn-light">&#8250;</button>
+        <li class="d-none">
+          <router-link @click="nextPage" :to="{path: '/lesson4', query: {page: +router.query.page + 1}}">
+            <button class="btn btn-light">&#8250;</button>
+          </router-link>
         </li>
     </ul>
   </div>

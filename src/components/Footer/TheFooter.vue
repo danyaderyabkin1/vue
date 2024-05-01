@@ -17,7 +17,7 @@
         </router-link>
         </li>
         <li>
-          <router-link class="nav-link px-2" to="/lesson4">
+          <router-link class="nav-link px-2" :to="{path: '/lesson4', query: {page: 1}}">
             Задача 4(каталог)
           </router-link>
         </li>
