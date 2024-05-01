@@ -18,6 +18,6 @@ userAccessKey ? loadCart.updateKey(userAccessKey) : loadCart.getKey()
     <router-view></router-view>
   </main>
   <the-footer />
-
+  <div class="modal"></div>
 </template>
 

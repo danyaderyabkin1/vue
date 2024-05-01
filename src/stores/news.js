@@ -3,10 +3,9 @@ import {ref} from "vue";
 import {fromParse} from "@/helpers/parserDoc.js";
 
 export const useNewsList = defineStore('newsList', () => {
-    const document = ref('');
     const newsItems = ref(null);
 
-    async function getNews(url) {
+    async function getNews(url, pageAdd) {
         const headers = new Headers();
         headers.append('Accept', 'application/xml');
 
@@ -20,7 +19,8 @@ export const useNewsList = defineStore('newsList', () => {
 
             if (response.ok) {
                 const xml = await response.text();
-                newsItems.value = fromParse(xml).array
+                console.log(xml)
+                newsItems.value = fromParse(xml).array.filter(el => el.id < pageAdd)
             } else {
                 console.log('Authorization failed: ' + response.statusText);
             }

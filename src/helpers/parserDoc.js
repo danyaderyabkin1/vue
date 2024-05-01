@@ -10,7 +10,8 @@ export const fromParse = (document) => {
             description: el.querySelector('description')?.textContent.trim(),
             link: el.querySelector('link')?.textContent,
             pubDate: el.querySelector('pubDate')?.textContent,
-            image: el.querySelector('enclosure') ? el.querySelector('enclosure')?.getAttribute('url') : '/load-photo.png',
+            category: el.querySelector('category') ? el.querySelector('category').textContent : '',
+            image: el.querySelector('enclosure') ? el.querySelector('enclosure')?.getAttribute('url') : '',
         }
         array.push(obj)
     })
