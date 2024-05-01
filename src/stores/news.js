@@ -8,14 +8,16 @@ export const useNewsList = defineStore('newsList', () => {
     const loading = ref(false);
     const modal = ref(false);
     const modalContent = ref({});
+    const error = ref(null)
 
     const getNews = async (url, pageAdd) => {
+        error.value = null;
         loading.value = true;
         return await (new Promise(resolve => setTimeout(resolve, 700)))
             .then(() => {
                 fetch(url)
                     .then(res => res.text())
-                    .catch(err => console.log(err))
+                    .catch(err => error.value = err.message)
                     .then(data => {
                         newsItems.value = fromParse(data).array.filter(el => el.id < pageAdd)
                     })
@@ -29,5 +31,5 @@ export const useNewsList = defineStore('newsList', () => {
         modalContent.value = item;
     }
 
-    return {getNews, createModal, newsItems, loading, modal, modalContent}
+    return {getNews, createModal, newsItems, loading, modal, modalContent, error}
 })

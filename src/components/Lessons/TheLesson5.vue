@@ -8,10 +8,10 @@ const router = useRoute()
 
 const newsList = useNewsList();
 const items = ref(5);
-const currentUrl = ref('/rss')
+const currentUrl = ref('https://rg.ru/xml/index.xml')
 
 onMounted(() => {
-  newsList.getNews('/rss', 5);
+  newsList.getNews('https://rg.ru/xml/index.xml', 5);
 })
 
 onUnmounted(() => {
@@ -30,20 +30,21 @@ const pageAdding = (num, url) => {
     <h2 class="text-center mb-4">Пятая задача</h2>
     <div class="container mb-4">
       <button  @click.prevent="newsList.newsItems = null;
-               currentUrl = '/rss';
+               currentUrl = 'https://lenta.ru/rss';
                items = 5;
-               newsList.getNews('/rss', 5);"
-               class="btn btn-info mr-3">
+               newsList.getNews('https://lenta.ru/rss', 5);"
+               class="btn btn-info mr-3 d-none">
       Новости "Лента.ру"
       </button>
       <button @click.prevent="newsList.newsItems = null;
               currentUrl = 'https://rg.ru/xml/index.xml';
               items = 5;
               newsList.getNews('https://rg.ru/xml/index.xml', 5)"
-              class="btn btn-info">
+              class="btn btn-info d-none">
       Новости "Российская газета"
       </button>
     </div>
+    <div v-show="newsList.error">{{newsList.error}}</div>
     <ul v-if="newsList.newsItems" class="list-unstyled d-flex flex-wrap justify-content-between">
       <news-item v-for="item in newsList.newsItems" :item="item" :key="item.id"></news-item>
     </ul>
@@ -178,7 +179,7 @@ const pageAdding = (num, url) => {
         <div class="load-anim"></div>
       </div>
     </div>
-    <button v-if="items > newsList.newsItems?.length" v-show="newsList.newsItems" @click.prevent="pageAdding(items + 4, currentUrl)" :class="{loading: newsList.loading}" class="btn btn-dark">загрузить еще</button>
+    <button v-if="!newsList.error" @click.prevent="pageAdding(items + 4, currentUrl)" :class="{loading: newsList.loading}" class="btn btn-dark">загрузить еще</button>
     <div v-else></div>
   </div>
 </template>
