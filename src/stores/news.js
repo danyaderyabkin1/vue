@@ -1,34 +1,33 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 import {fromParse} from "@/helpers/parserDoc.js";
+import {set} from "@vueuse/core";
 
 export const useNewsList = defineStore('newsList', () => {
     const newsItems = ref(null);
+    const loading = ref(false);
+    const modal = ref(false);
+    const modalContent = ref({});
 
-    async function getNews(url, pageAdd) {
-        const headers = new Headers();
-        headers.append('Accept', 'application/xml');
+    const getNews = async (url, pageAdd) => {
+        loading.value = true;
+        return await (new Promise(resolve => setTimeout(resolve, 700)))
+            .then(() => {
+                fetch(url)
+                    .then(res => res.text())
+                    .catch(err => console.log(err))
+                    .then(data => {
+                        newsItems.value = fromParse(data).array.filter(el => el.id < pageAdd)
+                    })
+            }).then(() => {
+                loading.value = false;
 
-        try {
-            const response = await fetch(url, {
-                mode: 'cors',
-                credentials: 'include',
-                method: 'GET',
-                headers: headers
-            });
-
-            if (response.ok) {
-                const xml = await response.text();
-                console.log(xml)
-                newsItems.value = fromParse(xml).array.filter(el => el.id < pageAdd)
-            } else {
-                console.log('Authorization failed: ' + response.statusText);
-            }
-
-        } catch (error) {
-            console.log('Error:', error.message);
-        }
+            })
+    }
+    const createModal = (item) => {
+        modal.value = true;
+        modalContent.value = item;
     }
 
-    return {getNews, newsItems}
+    return {getNews, createModal, newsItems, loading, modal, modalContent}
 })

@@ -1,12 +1,13 @@
 <script setup>
-import {computed, ref} from 'vue';
+import {ref} from 'vue';
 import ProductItem from "@/components/ProductsList/ProductItem.vue";
 import axios from "axios";
 import {API_BASE_URL} from "@/config.js";
-import {numberFormat} from "@/helpers/numberFormat.js";
+import {useRoute} from "vue-router";
 const products = ref([]);
 
-const page = ref(2);
+const router = useRoute()
+const page = ref(1);
 const perPage = ref(4);
 const productsLoading = ref(true)
 
@@ -58,10 +59,10 @@ getProducts()
         <button @click.prevent="prevPage" class="btn btn-light">&#8249;</button>
       </li>
         <li v-for="page in products.pagination.pages" :key="page">
-          <button @click.prevent="paginate(page)" :class="{active: page === products.pagination.page}" class="btn btn-light" >{{page}}</button>
+            <button @click.prevent="paginate(page)" :class="{active: page === products.pagination.page}" class="btn btn-light" >{{page}}</button>
         </li>
         <li>
-          <button @click.prevent="nextPage" class="btn btn-light">&#8250;</button>
+            <button @click.prevent="nextPage" class="btn btn-light">&#8250;</button>
         </li>
     </ul>
   </div>

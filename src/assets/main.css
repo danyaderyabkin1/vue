@@ -45,6 +45,10 @@ button:focus {
     border-radius: 10px;
 }
 
+.modal-dialog {
+    z-index: 9999;
+}
+
 .loader__wrap-list {
     background-color: transparent;
     border-radius: 10px;
