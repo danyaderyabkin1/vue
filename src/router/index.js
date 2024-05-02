@@ -7,9 +7,10 @@ import TheLesson4 from "@/components/Lessons/TheLesson4.vue";
 import TheLesson5 from "@/components/Lessons/TheLesson5.vue";
 import CartPage from "@/components/Cart/CartPage.vue";
 import ProductPage from "@/components/ProductsList/ProductPage.vue";
+import NotFound from "@/components/NotFound.vue"
 
 
-export const router = createRouter( {
+export const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
@@ -40,6 +41,11 @@ export const router = createRouter( {
             path: '/product/:id',
             component: ProductPage
         },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'NotFound',
+            component: NotFound
+        }
     ]
 });
 

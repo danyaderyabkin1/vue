@@ -11,7 +11,7 @@ export const fromParse = (document) => {
             link: el.querySelector('link')?.textContent,
             pubDate: el.querySelector('pubDate')?.textContent,
             category: el.querySelector('category') ? el.querySelector('category').textContent : '',
-            image: el.querySelector('enclosure') ? el.querySelector('enclosure')?.getAttribute('url') : '',
+            image: el.querySelector('enclosure') || el.querySelector('media') ? el.querySelector('enclosure')?.getAttribute('url') || el.querySelector('media').getAttribute('url')  : '',
         }
         array.push(obj)
     })

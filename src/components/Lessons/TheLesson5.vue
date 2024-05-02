@@ -28,26 +28,31 @@ const pageAdding = (num, url) => {
   <the-modal/>
   <div class="container container3 mt-3 mb-3 flex-fill text-center p-3">
     <h2 class="text-center mb-4">Пятая задача</h2>
-    <div class="container mb-4">
+    <div class="container mb-3">
       <button  @click.prevent="newsList.newsItems = null;
-               currentUrl = 'https://lenta.ru/rss';
+               currentUrl = '/rss';
                items = 5;
-               newsList.getNews('https://lenta.ru/rss', 5);"
-               class="btn btn-info mr-3 d-none">
-      Новости "Лента.ру"
+               newsList.getNews('/rss', 5);"
+               class="btn btn-info mr-3">
+        Новости "Лента.ру"
       </button>
       <button @click.prevent="newsList.newsItems = null;
               currentUrl = 'https://rg.ru/xml/index.xml';
               items = 5;
               newsList.getNews('https://rg.ru/xml/index.xml', 5)"
-              class="btn btn-info d-none">
-      Новости "Российская газета"
+              class="btn btn-info">
+        Новости "Российская газета"
       </button>
+      <div class="text-center" v-show="newsList.error">{{newsList.error}}</div>
     </div>
-    <div v-show="newsList.error">{{newsList.error}}</div>
-    <ul v-if="newsList.newsItems" class="list-unstyled d-flex flex-wrap justify-content-between">
-      <news-item v-for="item in newsList.newsItems" :item="item" :key="item.id"></news-item>
-    </ul>
+    <div v-if="newsList.newsItems" class="container p-0">
+      <ul class="list-unstyled d-flex flex-wrap justify-content-between">
+        <news-item v-for="item in newsList.newsItems" :item="item" :key="item.id"></news-item>
+      </ul>
+      <button v-if="newsList.fullLoad" @click.prevent="pageAdding(items + 4, currentUrl)" :class="{loading: newsList.loading}" class="btn btn-dark">загрузить еще</button>
+      <div v-else></div>
+    </div>
+
     <div v-else class="container container3 mt-3 mb-3 flex-fill text-center p-0">
       <ul class="list-unstyled d-flex flex-wrap justify-content-between">
         <li class="text-left w-100 mb-3">
@@ -179,9 +184,7 @@ const pageAdding = (num, url) => {
         <div class="load-anim"></div>
       </div>
     </div>
-    <button v-if="!newsList.error" @click.prevent="pageAdding(items + 4, currentUrl)" :class="{loading: newsList.loading}" class="btn btn-dark">загрузить еще</button>
-    <div v-else></div>
-  </div>
+    </div>
 </template>
 
 <style scoped>

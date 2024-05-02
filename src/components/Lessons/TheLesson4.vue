@@ -3,17 +3,18 @@ import {ref} from 'vue';
 import ProductItem from "@/components/ProductsList/ProductItem.vue";
 import axios from "axios";
 import {API_BASE_URL} from "@/config.js";
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 const products = ref([]);
 
 const router = useRoute()
-const page = ref(1);
+const page = ref(+router.query.page);
 const perPage = ref(4);
 const productsLoading = ref(true)
-
+const routerPusher = useRouter()
 const nextPage = () => {
-  if (+router.query.page === products.value.pagination.pages) return
-  page.value++
+  if (page.value === products.value.pagination.pages) return
+  routerPusher.push({path: router.path, query: {page: page.value + 1}});
+  page.value++;
   getProducts()
 }
 
@@ -22,7 +23,8 @@ const paginate = (pageNum) => {
   getProducts()
 }
 const prevPage = () => {
-  if (+router.query.page === 1) return
+  if (page.value === 1) return;
+  routerPusher.push({path: router.path, query: {page: page.value - 1}});
   page.value--
   getProducts()
 }
@@ -55,20 +57,16 @@ getProducts()
       <product-item v-for="product of products?.items" :product="product" :key="product.id"/>
       </ul>
     <ul class="pagination">
-      <li class="d-none">
-        <router-link @click="prevPage" :to="{path: '/lesson4', query: {page: +router.query.page - 1}}">
-          <button class="btn btn-light">&#8249;</button>
-        </router-link>
+      <li>
+          <button @click="prevPage" class="btn btn-light">&#8249;</button>
       </li>
         <li v-for="page in products.pagination.pages" :key="page">
           <router-link :to="{path: '/lesson4', query: {page: page}}">
             <button @click="paginate(page)" :class="{active: page === products.pagination.page}" class="btn btn-light" >{{page}}</button>
           </router-link>
         </li>
-        <li class="d-none">
-          <router-link @click="nextPage" :to="{path: '/lesson4', query: {page: +router.query.page + 1}}">
-            <button class="btn btn-light">&#8250;</button>
-          </router-link>
+        <li>
+            <button @click="nextPage" class="btn btn-light">&#8250;</button>
         </li>
     </ul>
   </div>
